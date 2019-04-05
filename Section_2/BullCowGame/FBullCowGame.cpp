@@ -2,7 +2,21 @@
 
 FBullCowGame::FBullCowGame() { this->Reset(); }
 
+int FBullCowGame::GetMaxTries() const { return this->MyMaxTries; }
+int FBullCowGame::GetCurrentTry() const { return this->MyCurrentTry; }
+int32 FBullCowGame::GetHiddenWordLength() const { return this->MyHiddenWord.length(); }
+bool FBullCowGame::IsGameWon() const { return bGameIsWon; }
+EGuessStatus FBullCowGame::CheckGuessValidity(FText guess) const {
+	EGuessStatus status = EGuessStatus::OK;
+	if (false) status = EGuessStatus::Not_Isogram;
+	else if (false) status = EGuessStatus::Now_Lowercase;
+	else if (guess.length() != this->GetHiddenWordLength()) status = EGuessStatus::Wrong_Length;
+	return status;
+}
+
 void FBullCowGame::Reset() {
+	this->bGameIsWon = false;
+
 	this->MyCurrentTry = 1;
 
 	const FText HIDDEN_WORD = "plant";
@@ -12,13 +26,11 @@ void FBullCowGame::Reset() {
 	this->MyMaxTries = MAX_TRIES;
 }
 
-bool FBullCowGame::CheckGuessValidity(FText) {
-	return false;
-}
-
 BullCowCount FBullCowGame::SubmitGuess(FText Guess) {
 	BullCowCount BullCowCount;
 	int32 HiddenWordLength = this->MyHiddenWord.length();
+
+	this->MyCurrentTry++;
 
 	for (int32 i = 0; i < HiddenWordLength; i++) {
 		for (int32 j = 0; j < HiddenWordLength; j++) {
@@ -29,12 +41,4 @@ BullCowCount FBullCowGame::SubmitGuess(FText Guess) {
 		}
 	}
 	return BullCowCount;
-}
-
-int FBullCowGame::GetMaxTries() const { return this->MyMaxTries; }
-
-int FBullCowGame::GetCurrentTry() const { return this->MyCurrentTry; }
-
-bool FBullCowGame::IsGameWon() const {
-	return false;
 }

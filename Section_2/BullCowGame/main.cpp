@@ -21,18 +21,19 @@ int main() {
 }
 
 void PrintIntro() {
-	constexpr int32 WORD_LENGTH = 5;
 	std::cout << "Welcome to Bulls and Cows, a fun word game." << std::endl;
-	std::cout << "Can you guess the " << WORD_LENGTH << " letter isogram I'm thinking of?\n" << std::endl;
+	std::cout << "Can you guess the " << BCGame.GetHiddenWordLength() << " letter isogram I'm thinking of?\n" << std::endl;
 }
 
 void PlayGame() {
+	BCGame.Reset();
 	int32 MaxTries = BCGame.GetMaxTries();
 
-	std::cout << MaxTries << std::endl;
-
-	for (int32 i = 0; i < MaxTries; i++) {
+	while (!BCGame.IsGameWon() && BCGame.GetCurrentTry() <= MaxTries) {
 		FText Guess = GetGuess();
+
+		EGuessStatus status = BCGame.CheckGuessValidity(Guess);
+
 		BullCowCount BullCowCount = BCGame.SubmitGuess(Guess);
 
 		std::cout << "Bulls = " << BullCowCount.Bulls;
