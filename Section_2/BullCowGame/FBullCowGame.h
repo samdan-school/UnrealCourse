@@ -10,6 +10,7 @@ struct BullCowCount {
 };
 
 enum class EGuessStatus {
+	Invalid_Status,
 	OK,
 	Not_Isogram,
 	Wrong_Length,
@@ -33,7 +34,7 @@ public:
 
 	void Reset();
 
-	BullCowCount SubmitGuess(FText);
+	BullCowCount SubmitValidGuess(FText);
 private:
 	int32 MyCurrentTry;
 	int32 MyMaxTries;

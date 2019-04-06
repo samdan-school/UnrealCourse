@@ -2,10 +2,11 @@
 
 FBullCowGame::FBullCowGame() { this->Reset(); }
 
-int FBullCowGame::GetMaxTries() const { return this->MyMaxTries; }
-int FBullCowGame::GetCurrentTry() const { return this->MyCurrentTry; }
+int32 FBullCowGame::GetMaxTries() const { return this->MyMaxTries; }
+int32 FBullCowGame::GetCurrentTry() const { return this->MyCurrentTry; }
 int32 FBullCowGame::GetHiddenWordLength() const { return this->MyHiddenWord.length(); }
 bool FBullCowGame::IsGameWon() const { return bGameIsWon; }
+
 EGuessStatus FBullCowGame::CheckGuessValidity(FText guess) const {
 	EGuessStatus status = EGuessStatus::OK;
 	if (false) status = EGuessStatus::Not_Isogram;
@@ -26,19 +27,21 @@ void FBullCowGame::Reset() {
 	this->MyMaxTries = MAX_TRIES;
 }
 
-BullCowCount FBullCowGame::SubmitGuess(FText Guess) {
-	BullCowCount BullCowCount;
-	int32 HiddenWordLength = this->MyHiddenWord.length();
-
+BullCowCount FBullCowGame::SubmitValidGuess(FText Guess) {
 	this->MyCurrentTry++;
+	BullCowCount BullCowCount;
+	int32 WordLength = this->GetHiddenWordLength(); // assume same length as guess
 
-	for (int32 i = 0; i < HiddenWordLength; i++) {
-		for (int32 j = 0; j < HiddenWordLength; j++) {
+	// loop throught all letes in the hidden word
+	for (int32 i = 0; i < WordLength; i++) {
+		for (int32 j = 0; j < WordLength; j++) {
 			if (this->MyHiddenWord[i] == Guess[i]) {
 				if (i == j)  BullCowCount.Bulls++;
 				else  BullCowCount.Cows++;
 			}
 		}
 	}
+	if (BullCowCount.Bulls == this->GetHiddenWordLength()) bGameIsWon = true;
+	else bGameIsWon == false;
 	return BullCowCount;
 }
